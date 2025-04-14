@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Devanagari to Katapayadi Converter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary-color: #483c32;
+      --secondary-color: #434d41;
+      --accent-color: brown;
+      --background-color: #fafaf8;
+      --text-color: #333;
+      --light-gray: #e9ecef;
+      --dark-gray: #6c757d;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--background-color);
+      margin: 0;
+      padding: 0;
+      background-image: url(./background.jpg);
+      background-size: cover;
+      background-position: center;
+    }
+
+    .container {
+      max-width: 95%;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    h1 {
+      color: white;
+      margin-bottom: 0.5rem;
+      font-size: 2rem;
+    }
+
+    .subtitle {
+      color: wheat;
+      background-color: #333;
+      font-weight: normal;
+      padding: 0.5rem;
+    }
+
+    .card {
+      background: #e0ddd5;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    textarea {
+      width: 90%;
+      max-width: 800px;
+      margin: 0 auto 1rem auto;
+      display: block;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      min-height: 100px;
+      max-height: 250px;
+      resize: vertical;
+      font-family: 'Noto Sans Devanagari', sans-serif;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.2);
+    }
+
+    button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: var(--secondary-color);
+    }
+
+    .result-section {
+      display: none;
+      margin-top: 2rem;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-box {
+      background-color: var(--light-gray);
+      border-radius: 4px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .result-label {
+      font-weight: 600;
+      color: var(--secondary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .devanagri-text {
+      font-size: 1.5rem;
+      font-family: 'Noto Sans Devanagari', sans-serif;
+    }
+
+    .code-text {
+      font-family: monospace;
+      font-size: 1.25rem;
+      color: var(--secondary-color);
+    }
+
+    .info-section {
+      background-color: burlywood;
+      border-left: 4px solid var(--accent-color);
+      padding: 1rem;
+      border-radius: 0 4px 4px 0;
+      margin-top: 2rem;
+    }
+
+    .info-title {
+      font-weight: 600;
+      color: whitesmoke;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--light-gray);
+      color: var(--dark-gray);
+      font-size: 0.9rem;
+    }
+
+    .keyboard-section {
+      margin-top: 2rem;
+      border-top: 1px solid var(--light-gray);
+      padding-top: 1.5rem;
+    }
+
+    .key {
+  padding: 3px 6px;  /* Reduced padding */
+  font-size: 12px;   /* Smaller font size */
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  text-align: center;
+  user-select: none;
+  border-radius: 4px;
+}
+
+.key:hover {
+  background-color: #ddd;
+}
+
+
+    .keyboard {
+      display: grid;
+      gap: 5px;
+      grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+      margin: 5px auto;
+      max-width: 800px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .back-button {
+      position: fixed;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background-color 0.3s;
+      top: 10px;
+      left: 10px;
+      z-index: 100;
+    }
+
+    .back-button:hover {
+      background-color: var(--secondary-color);
+    }
+
+    .know-more-button {
+      background-color: var(--accent-color);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+
+    .know-more-button:hover {
+      background-color: var(--secondary-color);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+
+      .card {
+        padding: 1rem;
+      }
+
+      textarea {
+        font-size: 1rem;
+        min-height: 90px;
+        max-height: 200px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      textarea {
+        min-height: 120px;
+        max-height: 250px;
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="./index.html" class="back-button">← Back</a>
+  <div class="container">
+    <header>
+      <h1>Devanagari to Katapayadi Converter</h1>
+      <p class="subtitle">Convert Devanagari text to Katapayadi numerical encoding</p>
+    </header>
+
+    <div class="card">
+      <div class="form-group">
+        <label for="devanagriInput">Enter Devanagari Text:</label>
+        <textarea id="devanagriInput" placeholder="Use the keyboard below or type directly if you have a Devanagari keyboard"></textarea>
+      </div>
+
+      <div class="keyboard-section">
+        <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+          <div style="flex: 1 1 300px;">
+            <h4 style="text-align:center;">Consonants</h4>
+            <div class="keyboard" style="grid-template-columns: repeat(5, 1fr);">
+              <div class="key">क</div><div class="key">ख</div><div class="key">ग</div><div class="key">घ</div><div class="key">ङ</div>
+              <div class="key">च</div><div class="key">छ</div><div class="key">ज</div><div class="key">झ</div><div class="key">ञ</div>
+              <div class="key">ट</div><div class="key">ठ</div><div class="key">ड</div><div class="key">ढ</div><div class="key">ण</div>
+              <div class="key">त</div><div class="key">थ</div><div class="key">द</div><div class="key">ध</div><div class="key">न</div>
+              <div class="key">प</div><div class="key">फ</div><div class="key">ब</div><div class="key">भ</div><div class="key">म</div>
+              <div class="key">य</div><div class="key">र</div><div class="key">ल</div><div class="key">व</div><div class="key">श</div>
+              <div class="key">ष</div><div class="key">स</div><div class="key">ह</div>
+              <div class="key">क्ष</div><div class="key">त्र</div><div class="key">ज्ञ</div>
+            </div>
+          </div>
+
+          <div style="flex: 1 1 250px;">
+            <h4 style="text-align:center;">Vowels</h4>
+            <div class="keyboard" style="grid-template-columns: repeat(5, 1fr); margin-bottom: 10px;">
+              <div class="key">अ</div><div class="key">आ</div><div class="key">इ</div><div class="key">ई</div><div class="key">उ</div>
+              <div class="key">ऊ</div><div class="key">ए</div><div class="key">ऐ</div><div class="key">ओ</div><div class="key">औ</div>
+              <div class="key">अं</div><div class="key">अः</div>
+            </div>
+
+            <h4 style="text-align:center;">Matras</h4>
+            <div class="keyboard" style="grid-template-columns: repeat(5, 1fr);">
+              <div class="key">ा</div><div class="key">ि</div><div class="key">ी</div><div class="key">ु</div><div class="key">ू</div>
+              <div class="key">ृ</div><div class="key">े</div><div class="key">ै</div><div class="key">ो</div><div class="key">ौ</div>
+              <div class="key">ं</div><div class="key">ः</div><div class="key">्</div><div class="key">ँ</div><div class="key"> </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div style="display: flex; gap: 1rem; justify-content: center;">
+        <button onclick="processDevanagriWord()">Encode</button>
+        <button onclick="clearText()">Clear</button>
+      </div>
+
+      <div id="resultSection" class="result-section">
+        <div class="result-box">
+          <div class="result-label">Devanagari Text:</div>
+          <div id="devanagriText" class="devanagri-text"></div>
+        </div>
+        <div class="result-box">
+          <div class="result-label">Katapayadi Encoded:</div>
+          <div id="encodedCode" class="code-text"></div>
+        </div>
+        <p>Want to know how this word is encoded ?</p>
+        <a href="know_more.html" class="know-more-button">Know More</a>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-title">Katapayadi Encoding System</div>
+      <p>The Katapayadi system assigns values to consonants for numeric encoding. Vowels and matras are ignored.</p>
+      <ul>
+        <li><strong>क ख ग घ ङ</strong> = 1, 2, 3, 4, 5</li>
+        <li><strong>च छ ज झ ञ</strong> = 6, 7, 8, 9, 0</li>
+        <li><strong>ट ठ ड ढ ण</strong> = 1, 2, 3, 4, 5</li>
+        <li><strong>त थ द ध न</strong> = 6, 7, 8, 9, 0</li>
+        <li><strong>प फ ब भ म</strong> = 1, 2, 3, 4, 5</li>
+        <li><strong>य र ल व</strong> = 6, 7, 8, 9</li>
+        <li><strong>श ष स ह</strong> = 6, 1, 2, 3</li>
+        <li><strong>क्ष त्र ज्ञ</strong> = 6, 6, 8</li>
+      </ul>
+    </div>
+
+    <footer>
+      <p style="color: #ccc;">Devanagari to Katapayadi Converter</p>
+    </footer>
+  </div>
+
+  <script>
+    const katapayadiMap = {
+      'क': 1, 'ख': 2, 'ग': 3, 'घ': 4, 'च': 5, 'छ': 6, 'ज': 7, 'झ': 8, 'ञ': 9, 'म': 0,
+      'ट': 1, 'ठ': 2, 'ड': 3, 'ढ': 4, 'ण': 5, 'त': 6, 'थ': 7, 'द': 8, 'ध': 9, 'न': 0,
+      'प': 1, 'फ': 2, 'ब': 3, 'भ': 4, 'म': 5,
+      'य': 1, 'र': 2, 'ल': 3, 'व': 4, 'श': 5, 'ष': 6, 'स': 7, 'ह': 8
+    };
+
+    function processDevanagriWord() {
+      const input = document.getElementById('devanagriInput').value.trim();
+      if (!input) return alert('Please enter Devanagari text to encode');
+      
+      document.getElementById('devanagriText').textContent = input;
+      const encoded = katapayadiEncode(input);
+      document.getElementById('encodedCode').textContent = encoded;
+      
+      localStorage.setItem("devanagariText", input);
+      localStorage.setItem("encodedResult", encoded);
+      
+      const resultSection = document.getElementById('resultSection');
+      resultSection.style.display = 'block';
+      
+      resultSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function katapayadiEncode(text) {
+      const consonants = text.replace(/[्ािीुूृॄेैोौँःॉॊऒऻ़ऽॎॏ]/g, '');
+      let code = '';
+      for (const ch of consonants) {
+        if (katapayadiMap[ch] !== undefined) code += katapayadiMap[ch];
+      }
+      return code.split('').reverse().join('') || '0';
+    }
+
+    function clearText() {
+      document.getElementById("devanagriInput").value = "";
+      document.getElementById("devanagriText").textContent = "";
+      document.getElementById("encodedCode").textContent = "";
+      document.getElementById("resultSection").style.display = "none";
+    }
+
+    document.querySelectorAll('.key').forEach(key => {
+      key.addEventListener('click', () => {
+        document.getElementById("devanagriInput").value += key.textContent;
+      });
+    });
+
+    document.getElementById('devanagriInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        processDevanagriWord();
+      }
+    });
+  </script>
+</body>
+</html>
